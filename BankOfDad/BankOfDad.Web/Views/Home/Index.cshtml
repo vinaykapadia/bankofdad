@@ -1,0 +1,23 @@
+﻿@model BankOfDad.Models.AuthRequest
+
+@{
+    ViewData["Title"] = "Log In";
+}
+
+<div class="text-center">
+    @using (Html.BeginForm("LogIn", "Home", FormMethod.Post))
+    {
+        <table>
+            <tr>
+                <td style="padding-right:10px">@Html.LabelFor(m => m.Username)</td>
+                <td>@Html.TextBoxFor(m => m.Username)</td>
+            <tr>
+                <td style="padding-right:10px">@Html.LabelFor(m => m.Password)</td>
+                <td>@Html.PasswordFor(m => m.Password)</td>
+            </tr>
+            <tr>
+                <td colspan="2"><input id="submit" type="submit" value="Log In" /></td>
+            </tr>
+        </table>
+    }
+</div>

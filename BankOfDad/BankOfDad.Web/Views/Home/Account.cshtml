@@ -1,0 +1,71 @@
+﻿@using Microsoft.AspNetCore.Mvc.Rendering
+@model AccountViewModel
+
+@{
+    ViewData["Title"] = $"{Model.BankAccount.Name}";
+}
+
+<h1>Account: @Model.BankAccount.Name</h1>
+
+<p>Balance: $@(Model.BankAccount.Balance.HasValue ? Model.BankAccount.Balance.Value : "∞")</p>
+
+<p/>
+
+<div>
+    @using (Html.BeginForm("Transact", "Home", FormMethod.Post))
+    {
+        @Html.HiddenFor(m => m.Request.From)
+        <table>
+            <tr>
+                <td>@Html.LabelFor(m => m.Request.To)</td>
+                <td>@Html.DropDownListFor(m => m.Request.To, new SelectList(Model.ToAccounts, "Key", "Value"))</td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(m => m.Request.Amount)</td>
+                <td>@Html.TextBoxFor(m => m.Request.Amount, htmlAttributes: new { Type = "Number", Min = "0.01", Max = "10000", Step = ".01", Required = "true" })</td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(m => m.Request.Description)</td>
+                <td>@Html.TextBoxFor(m => m.Request.Description, htmlAttributes: new { Required = "true" })</td>
+            </tr>
+            <tr>
+                <td colspan="2"><input id="submit" type="submit" value="Send" /></td>
+            </tr>
+        </table>
+    }
+</div>
+
+<p/>
+
+<div>
+    Transaction:
+    <table class="table table-hover table-striped" data-bs-theme="dark">
+        <thead>
+        <tr>
+            <th>Date</th>
+            <th>Description</th>
+            <th>Who</th>
+            <th style="width:1px">Amount</th>
+            @if (Model.BankAccount.Balance.HasValue)
+            {
+                <th>Balance</th>
+            }
+        </tr>
+        </thead>
+        <tbody>
+            @foreach (var transaction in Model.BankAccount.Transactions)
+        {
+            <tr>
+                <td>@($"{transaction.TimeStamp:D}")</td>
+                <td>@transaction.Description</td>
+                <td>@transaction.DestinationAccount</td>
+                <td style="text-align: right">@($"{transaction.Amount:C}")</td>
+                @if (Model.BankAccount.Balance.HasValue)
+                {
+                    <td style="text-align: right">@($"${transaction.Balance:F2}")</td>
+                }
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>

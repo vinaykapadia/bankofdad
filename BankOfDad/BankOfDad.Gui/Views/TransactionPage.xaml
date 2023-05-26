@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="BankOfDad.Gui.Views.TransactionPage"
+             Title="Bank of Dad">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Logout" Clicked="BtnLogout_Clicked" />
+    </ContentPage.ToolbarItems>
+    <VerticalStackLayout HorizontalOptions="FillAndExpand">
+        <VerticalStackLayout HorizontalOptions="Center">
+            <Label x:Name="LblName" FontSize="Title" />
+            <HorizontalStackLayout>
+                <Label Text="Balance: " FontSize="Large" />
+                <Label x:Name="LblBalance" FontSize="Large" />
+            </HorizontalStackLayout>
+        </VerticalStackLayout>
+        <Grid Margin="20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Label Text="To" />
+            <Picker x:Name="LstToAccounts" Grid.Column="1" />
+            <Label Grid.Row="1" Text="Amount" />
+            <Entry Grid.Row="1" Grid.Column="1" x:Name="TxtAmount" Keyboard="Numeric" />
+            <Label Grid.Row="2" Text="Description" />
+            <Entry Grid.Row="2" Grid.Column="1" x:Name="TxtDescription" />
+            <Button Grid.Row="3" Grid.ColumnSpan="2"  Margin="5" Text="Send" Clicked="BtnSend_Clicked" />
+        </Grid>
+    </VerticalStackLayout>
+</ContentPage>
