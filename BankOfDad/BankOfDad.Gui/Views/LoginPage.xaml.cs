@@ -18,7 +18,7 @@ public partial class LoginPage : ContentPage
 
         if (token != null)
         {
-            await SecureStorage.SetAsync("token", token);
+            await TokenAccess.SetToken(token);
             _client.SetToken(token);
             await Shell.Current.GoToAsync("///home");
         }

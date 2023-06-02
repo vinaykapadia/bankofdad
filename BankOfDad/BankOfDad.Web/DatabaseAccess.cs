@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using BankOfDad.Dadabase;
-using BankOfDad.Web.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using BankOfDad.Dadabase.Models;

@@ -23,14 +23,14 @@ public partial class HomePage : ContentPage
 
     private async Task UpdateAccount()
     {
-        var token = SecureStorage.GetAsync("token").Result;
+        var token = TokenAccess.GetToken().Result;
         _client.SetToken(token);
 
         var account = await _client.GetAccount();
 
         if (account == null)
         {
-            SecureStorage.Remove("token");
+            TokenAccess.RemoveToken();
             Dispatcher.Dispatch(async () => { await Shell.Current.GoToAsync("///login"); });
             return;
         }
@@ -45,7 +45,7 @@ public partial class HomePage : ContentPage
 
     private void BtnLogout_Clicked(object sender, EventArgs args)
     {
-        SecureStorage.Remove("token");
+        TokenAccess.RemoveToken();
         Dispatcher.Dispatch(async () => { await Shell.Current.GoToAsync("///login"); });
     }
 }

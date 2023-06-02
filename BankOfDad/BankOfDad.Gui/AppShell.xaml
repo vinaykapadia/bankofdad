@@ -9,7 +9,7 @@
 
     <!--Main Page-->
     <TabBar>
-        <Tab Title="Home" Icon="piggybank.svg">
+        <Tab Title="Home" Icon="piggybank">
             <ShellContent
                 Icon="piggybank.svg"
                 Title="Home"
@@ -17,7 +17,7 @@
                 Route="home" />
 
         </Tab>
-        <Tab Title="Transaction" Icon="cash.svg">
+        <Tab Title="Transaction" Icon="cash">
             <ShellContent
                 Icon="cash.svg"
                 Title="Transaction"
