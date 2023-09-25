@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using BankOfDad.Dadabase;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
@@ -22,35 +22,22 @@ public class DatabaseAccess
 
     public IEnumerable<BankAccountResponse> GetAccounts()
     {
-        return _mapper.Map<IList<BankAccountResponse>>(_db.BankAccounts);
+        var account = GetAccountFromDatabase(UserName);
+        return _mapper.Map<IList<BankAccountResponse>>(_db.BankAccounts.Where(a => a.InstanceId == account.InstanceId));
     }
 
     public BankAccountResponse GetAccount() => GetAccount(UserName);
 
     public BankAccountResponse GetAccount(int id)
     {
-        var account = _db.BankAccounts.Include(a => a.Transactions
-                .OrderByDescending(t => t.TimeStamp))
-            .FirstOrDefault(a => a.BankAccountId == id);
-
-        if (account == null || (Role != "Administrator" && account.UserName != UserName))
-        {
-            return null;
-        }
+        var account = GetAccountFromDatabase(id);
 
         return _mapper.Map<BankAccountResponse>(account);
     }
     
     public BankAccountResponse GetAccount(string username)
     {
-        var account = _db.BankAccounts.Include(a => a.Transactions
-                .OrderByDescending(t => t.TimeStamp))
-            .FirstOrDefault(a => a.UserName == username);
-
-        if (account == null || (Role != "Administrator" && account.UserName != UserName))
-        {
-            return null;
-        }
+        var account = GetAccountFromDatabase(username);
 
         return _mapper.Map<BankAccountResponse>(account);
     }
@@ -67,6 +54,11 @@ public class DatabaseAccess
 
         var a2 = _db.BankAccounts.Include(a => a.Transactions)
             .First(a => a.BankAccountId == toId);
+
+        if (a1.InstanceId != a2.InstanceId)
+        {
+            return null;
+        }
 
         a1.Balance -= amount;
         a2.Balance += amount;
@@ -104,4 +96,32 @@ public class DatabaseAccess
 
     private string GetClaim(string claimType) =>
         _context.HttpContext?.User.Claims.FirstOrDefault(c => c.Type == claimType)?.Value ?? "";
+
+    private BankAccount GetAccountFromDatabase(int id)
+    {
+        var account = _db.BankAccounts.Include(a => a.Transactions
+                .OrderByDescending(t => t.TimeStamp))
+            .FirstOrDefault(a => a.BankAccountId == id);
+
+        if (account == null || (Role != "Administrator" && account.UserName != UserName))
+        {
+            return null;
+        }
+
+        return account;
+    }
+
+    private BankAccount GetAccountFromDatabase(string username)
+    {
+        var account = _db.BankAccounts.Include(a => a.Transactions
+                .OrderByDescending(t => t.TimeStamp))
+            .FirstOrDefault(a => a.UserName == username);
+
+        if (account == null || (Role != "Administrator" && account.UserName != UserName))
+        {
+            return null;
+        }
+
+        return account;
+    }
 }

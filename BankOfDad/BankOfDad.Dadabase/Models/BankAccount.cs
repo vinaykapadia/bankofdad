@@ -12,6 +12,9 @@ public class BankAccount
     [Column(nameof(BankAccountId))]
     public int BankAccountId { get; set; }
 
+    [Column(nameof(InstanceId))]
+    public int InstanceId { get; set; }
+
     [Column(nameof(Name))]
     [MaxLength(30)]
     public string Name { get; set; }
