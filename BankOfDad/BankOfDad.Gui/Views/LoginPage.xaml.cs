@@ -5,10 +5,13 @@ namespace BankOfDad.Gui.Views;
 public partial class LoginPage : ContentPage
 {
     private readonly BankOfDadClient _client;
+    private readonly ITokenAccess _tokenAccess;
 
-	public LoginPage(BankOfDadClient client)
+    public LoginPage(BankOfDadClient client, ITokenAccess tokenAccess)
 	{
         _client = client;
+        _tokenAccess = tokenAccess;
+
 		InitializeComponent();
 	}
 
@@ -18,7 +21,7 @@ public partial class LoginPage : ContentPage
 
         if (token != null)
         {
-            await TokenAccess.SetToken(token);
+            await _tokenAccess.SetToken(token);
             _client.SetToken(token);
             await Shell.Current.GoToAsync("///home");
         }

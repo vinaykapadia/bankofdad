@@ -29,6 +29,15 @@ namespace BankOfDad.Gui
             builder.Services.AddSingleton<HomePage>();
             builder.Services.AddSingleton<TransactionPage>();
 
+            if (DeviceInfo.Platform == DevicePlatform.iOS)
+            {
+                builder.Services.AddScoped<ITokenAccess, InsecureTokenAccess>();
+            }
+            else
+            {
+                builder.Services.AddScoped<ITokenAccess, SecureTokenAccess>();
+            }
+
             return builder.Build();
         }
     }

@@ -1,5 +1,4 @@
 ﻿using BankOfDad.Models;
-using BankOfDad.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BankOfDad.Web.Controllers;

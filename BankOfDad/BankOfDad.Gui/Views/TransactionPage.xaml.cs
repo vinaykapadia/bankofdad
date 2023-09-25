@@ -5,11 +5,13 @@ namespace BankOfDad.Gui.Views;
 public partial class TransactionPage : ContentPage
 {
     private readonly BankOfDadClient _client;
+    private readonly ITokenAccess _tokenAccess;
     private int accountId;
 
-    public TransactionPage(BankOfDadClient client)
+    public TransactionPage(BankOfDadClient client, ITokenAccess tokenAccess)
     {
         _client = client;
+        _tokenAccess = tokenAccess;
 
         InitializeComponent();
     }
@@ -24,14 +26,14 @@ public partial class TransactionPage : ContentPage
 
     private async Task UpdateAccount()
     {
-        var token = TokenAccess.GetToken().Result;
+        var token = _tokenAccess.GetToken().Result;
         _client.SetToken(token);
 
         var account = await _client.GetAccount();
 
         if (account == null)
         {
-            TokenAccess.RemoveToken();
+            _tokenAccess.RemoveToken();
             Dispatcher.Dispatch(async () => { await Shell.Current.GoToAsync("///login"); });
             return;
         }
@@ -65,7 +67,7 @@ public partial class TransactionPage : ContentPage
 
     private void BtnLogout_Clicked(object sender, EventArgs args)
     {
-        TokenAccess.RemoveToken();
+        _tokenAccess.RemoveToken();
         Dispatcher.Dispatch(async () => { await Shell.Current.GoToAsync("///login"); });
     }
 }

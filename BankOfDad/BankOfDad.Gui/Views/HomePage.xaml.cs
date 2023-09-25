@@ -5,10 +5,12 @@ namespace BankOfDad.Gui.Views;
 public partial class HomePage : ContentPage
 {
     private readonly BankOfDadClient _client;
+    private readonly ITokenAccess _tokenAccess;
 
-    public HomePage(BankOfDadClient client)
+    public HomePage(BankOfDadClient client, ITokenAccess tokenAccess)
     {
         _client = client;
+        _tokenAccess = tokenAccess;
 
         InitializeComponent();
 	}
@@ -23,14 +25,14 @@ public partial class HomePage : ContentPage
 
     private async Task UpdateAccount()
     {
-        var token = TokenAccess.GetToken().Result;
+        var token = _tokenAccess.GetToken().Result;
         _client.SetToken(token);
 
         var account = await _client.GetAccount();
 
         if (account == null)
         {
-            TokenAccess.RemoveToken();
+            _tokenAccess.RemoveToken();
             Dispatcher.Dispatch(async () => { await Shell.Current.GoToAsync("///login"); });
             return;
         }
@@ -45,7 +47,7 @@ public partial class HomePage : ContentPage
 
     private void BtnLogout_Clicked(object sender, EventArgs args)
     {
-        TokenAccess.RemoveToken();
+        _tokenAccess.RemoveToken();
         Dispatcher.Dispatch(async () => { await Shell.Current.GoToAsync("///login"); });
     }
 }
