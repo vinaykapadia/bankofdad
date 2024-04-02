@@ -24,4 +24,10 @@
     <ProjectReference Include="..\BankOfDad.Models\BankOfDad.Models.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="wwwroot\bankofdad.apk">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>
